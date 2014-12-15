@@ -157,6 +157,7 @@ class ThreadListener(EventListener):
 class EventProcessor(threading.Thread):
     def __init__(self, debugger, target, process, listener):
         threading.Thread.__init__(self)
+        self.daemon = True
         self.debugger = debugger
         self.target = target
         self.process = process
@@ -438,11 +439,11 @@ def main(argv):
         # Now bombard the event process thread with tasks        
         while(True):    
             # post a few test tasks that interrupt the inferior
-            eventProcessor.postTask(helloTask, "Hello task", 1)
-            eventProcessor.postTask(helloTask, "Hello task", 1)
-            eventProcessor.postTask(helloTask, "Hello task", 1)
-            eventProcessor.postTask(helloTask, "Hello task", 1)
-            eventProcessor.postTask(helloTask, "Hello task", 1)
+            eventProcessor.postTask(helloTask, "Hello task", 10)
+            eventProcessor.postTask(helloTask, "Hello task", 10)
+            eventProcessor.postTask(helloTask, "Hello task", 10)
+            eventProcessor.postTask(helloTask, "Hello task", 10)
+            eventProcessor.postTask(helloTask, "Hello task", 10)
             # sleep for 20ms
             time.sleep(0.02)
         
