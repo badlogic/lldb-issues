@@ -194,10 +194,15 @@ class EventProcessor(threading.Thread):
             event = self.pollEvent()
                          
             # if we didn't get an event, and if no task
-            # is pending, continue to reduce logging
+            # is pending or a ask is waiting for suspension
             with self.lock:   
-                if event == None and self.task == None:
-                    continue                                      
+                if event == None:
+                    if self.task == None:
+                        continue
+                    else:
+                        if(self.requestedStopForTask):
+                            continue
+                                                   
             
             # broadcast the event to all listeners registered via addListener()
             self.broadcastEvent(event)
