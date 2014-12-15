@@ -272,14 +272,17 @@ class EventProcessor(threading.Thread):
         
         log(tag, "Vote results: suspend=%s, resume=%s" % (self.suspendVotes, self.resumeVotes))
         if self.suspendVotes > self.resumeVotes and self.process.GetState() == lldb.eStateRunning:
-            self.process.SendAsyncInterrupt()
-            log(tag, "Suspending process")
+            error = self.process.Stop()
+            if not error.IsValid() or error.Fail():
+                log(tag, "Failed to stop process, reason: %s" % error.GetCString())
+            else:
+                log(tag, "Stopped process")
         elif self.suspendVotes < self.resumeVotes and self.process.GetState() != lldb.eStateRunning:
             error = self.process.Continue()
             if not error.IsValid() or error.Fail():
                 log(tag, "Failed to resume process, reason: %s" % error.GetCString())
             else:
-                log(tag, "Resuming process")
+                log(tag, "Resumed process")
         else:
             log(tag, "Vote tie or suspends > resumes in stopped state or resumes > suspends in running state, not doing anything")
         self.suspendVotes = 0
