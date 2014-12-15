@@ -14,7 +14,7 @@ except ImportError:
     platform_system = platform.system()
     if platform_system == 'Darwin':
         # local debug build of lldb, must set LLDB_DEBUGSERVER_PATH env var for this to work
-        #lldb_python_dirs.append("/Users/badlogic/workspaces/robovm/robovm-debug/lldb/debug/macosx-x86_64/llvm/lib/python2.7/site-packages")
+        lldb_python_dirs.append("/Users/badlogic/workspaces/robovm/robovm-debug/lldb/debug/macosx-x86_64/llvm/lib/python2.7/site-packages")
         
         # On Darwin, try the currently selected Xcode directory
         xcode_dir = commands.getoutput("xcode-select --print-path")
